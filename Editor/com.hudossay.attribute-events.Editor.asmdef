@@ -1,0 +1,16 @@
+{
+    "name": "Editor",
+    "rootNamespace": "Hudossay.AttributeEvents",
+    "references": [
+        "GUID:a4a0c611f7625064dafe27f32ba739e5"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
