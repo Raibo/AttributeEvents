@@ -13,14 +13,16 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.EventLinks
     {
         public readonly GameObject BroadcasterObject;
         public readonly GameObject ListenerObject;
+        public readonly MonoBehaviour ListenerMono;
 
-        public bool IsActive => BroadcasterObject.activeInHierarchy && ListenerObject.activeInHierarchy;
+        public bool IsActive => ListenerMono.isActiveAndEnabled;
 
 
-        public EventLinkBase(GameObject broadcaster, GameObject listener)
+        public EventLinkBase(MonoBehaviour broadcaster, MonoBehaviour listener)
         {
-            BroadcasterObject = broadcaster;
-            ListenerObject = listener;
+            BroadcasterObject = broadcaster.gameObject;
+            ListenerObject = listener.gameObject;
+            ListenerMono = listener;
         }
 
 

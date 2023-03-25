@@ -42,7 +42,7 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.CouplingStructure
                 return null;
             }
 
-            var newLink = new EventLink(broadcaster.gameObject, listener.gameObject, eventValueInMono, responseDelegate);
+            var newLink = new EventLink(broadcaster, listener, eventValueInMono, responseDelegate);
             newLink.RegisterToEvent();
 
 #if UNITY_EDITOR
@@ -77,8 +77,8 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.CouplingStructure
                 return null;
             }
 
-            _linkCtorParams[0] = broadcasterMono.gameObject;
-            _linkCtorParams[1] = listenerMono.gameObject;
+            _linkCtorParams[0] = broadcasterMono;
+            _linkCtorParams[1] = listenerMono;
             _linkCtorParams[2] = eventValueInMono;
             _linkCtorParams[3] = responseDelegate;
 
@@ -94,8 +94,8 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.CouplingStructure
 
         private static readonly Type[] _linkCtorTypes =
         {
-            typeof(GameObject),
-            typeof(GameObject),
+            typeof(MonoBehaviour),
+            typeof(MonoBehaviour),
             typeof(object),
             typeof(object),
         };

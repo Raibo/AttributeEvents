@@ -15,7 +15,7 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.EventLinks
         public readonly Action<T1, T2, T3> Response;
 
 
-        public EventLink(GameObject broadcaster, GameObject listener, object gameEvent, object responseAction) : base(broadcaster, listener)
+        public EventLink(MonoBehaviour broadcaster, MonoBehaviour listener, object gameEvent, object responseAction) : base(broadcaster, listener)
         {
             var eventCasted = gameEvent as GameEvent<T1, T2, T3>;
             var actionCasted = responseAction as Action<T1, T2, T3>;

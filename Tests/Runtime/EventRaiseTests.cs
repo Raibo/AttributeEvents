@@ -83,31 +83,6 @@ namespace Hudossay.AttributeEvents.Assets.Tests.Runtime
             yield break;
         }
 
-        [UnityTest]
-        public IEnumerator NoInvokeWhenInactiveBroadcaster()
-        {
-            var (broadcaster, listener, broadcasterLinker, listenerLinker) = GetSubscriptedPair();
-
-            var broadcasterBeh = broadcaster.GetComponent<BroadcasterAllMatch>();
-            var listenerBeh = listener.GetComponent<ListenerAllMatch>();
-
-            broadcaster.SetActive(false);
-
-            broadcasterBeh.ParameterlessEvent.Raise();
-            broadcasterBeh.OneParamEvent.Raise(1);
-            broadcasterBeh.TwoParamEvent.Raise(2, 3);
-            broadcasterBeh.ThreeParamEvent.Raise(4, 5, 6);
-            broadcasterBeh.FourParamEvent.Raise(7, 8, 9, 10);
-
-            Assert.AreEqual(0, listenerBeh.ParameterlessCall);
-            Assert.AreEqual(0, listenerBeh.OneParamCall);
-            Assert.AreEqual((0, 0), listenerBeh.TwoParamCall);
-            Assert.AreEqual((0, 0, 0), listenerBeh.ThreeParamCall);
-            Assert.AreEqual((0, 0, 0, 0), listenerBeh.FourParamCall);
-
-            yield break;
-        }
-
 
         private static (GameObject, GameObject, EventLinker, EventLinker) GetSubscriptedPair()
         {
