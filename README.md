@@ -97,6 +97,8 @@ public class UnitAnimator : MonoBehaviour
 }
 
 
+// This script is expected to be on the same GameObject as UnitAnumator script
+// If GameObjects are different, then GameObject with Damageable must broadcast to GameObject with UnitAnimator
 public class Damageable : MonoBehaviour
 {
     [EventLocal(UnitEvents.DamageReceived)]
