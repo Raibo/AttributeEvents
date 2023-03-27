@@ -60,7 +60,7 @@ A GameObject is considered subscripted to itself by default.
 ## Debugging
 You can observe local subscriptions in `EventLinker` component.
 
-You can also copy a full information report about all local or global subscriptions in `EventLinker`'s context menu.  
+You can also copy a full information report about all local or global connections in `EventLinker`'s context menu.  
 ![image](https://user-images.githubusercontent.com/8547320/227983346-01eb6a0a-1fe1-4dd8-ae08-1632fe6dfacb.png)
 
 
