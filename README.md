@@ -69,7 +69,7 @@ You can also copy a full information report about all local or global connection
 public enum UnitEvents
 {
     DamageReceived,
-    EnemyUnitKilled,
+    UnitKilled,
     . . .
 }
 
@@ -78,7 +78,7 @@ public class ScoreManager : MonoBehaviour
 {
     public int TotalScore;
     
-    [ResponseGlobal(UnitEvents.EnemyUnitKilled)]
+    [ResponseGlobal(UnitEvents.UnitKilled)]
     public void AddScore(int addedScore)
     {
         TotalScore += addedScore;
@@ -104,8 +104,8 @@ public class Damageable : MonoBehaviour
     [EventLocal(UnitEvents.DamageReceived)]
     public GameEvent DamageReceived;
     
-    [EventGlobal(UnitEvents.EnemyUnitKilled)]
-    public GameEvent<int> EnemyUnitKilled;
+    [EventGlobal(UnitEvents.UnitKilled)]
+    public GameEvent<int> UnitKilled;
     
     public float Health;
     public int KillScore;
@@ -120,7 +120,7 @@ public class Damageable : MonoBehaviour
         {
             // Here we call a global event so that a whatever score system could know
             // that a specific amount of points are scored for killing an enemy
-            EnemyUnitKilled.Raise(KillScore);
+            UnitKilled.Raise(KillScore);
             
             // Rest of the code that handles unit death
             . . .
