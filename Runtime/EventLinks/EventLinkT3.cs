@@ -39,6 +39,13 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.EventLinks
         }
 
 
+        public void RaiseForced(T1 argument1, T2 argument2, T3 argument3)
+        {
+            if (Response != null)
+                Response.Invoke(argument1, argument2, argument3);
+        }
+
+
         public override void RegisterToEvent()
         {
             if (Event != null)

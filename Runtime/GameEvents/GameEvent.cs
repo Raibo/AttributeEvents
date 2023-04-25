@@ -16,6 +16,13 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.GameEvents
         }
 
 
+        public void RaiseForced()
+        {
+            for (int i = Links.Count - 1; i >= 0; i--)
+                Links[i].RaiseForced();
+        }
+
+
         public void AddLink(EventLink listener)
         {
             if (!Links.Contains(listener))

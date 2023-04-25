@@ -50,16 +50,8 @@ namespace Hudossay.AttributeEvents.Assets.Runtime
         }
 
 
-        void OnEnable()
-        {
-            LabelGameObjectMonos();
-            InitializeGameObjectEvents();
-#if UNITY_EDITOR
-            RestoreBrokenLinks();
-#endif
-            StartListeningTo(gameObject);
-            ConnectGlobal();
-        }
+        void OnEnable() =>
+            Initialize();
 
 
         private void OnDisable()
@@ -72,6 +64,18 @@ namespace Hudossay.AttributeEvents.Assets.Runtime
         {
             DisconnectMyLinks();
             DisconnectGlobal();
+        }
+
+
+        public void Initialize()
+        {
+            LabelGameObjectMonos();
+            InitializeGameObjectEvents();
+#if UNITY_EDITOR
+            RestoreBrokenLinks();
+#endif
+            StartListeningTo(gameObject);
+            ConnectGlobal();
         }
 
 
