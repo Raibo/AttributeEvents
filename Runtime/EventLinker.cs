@@ -54,10 +54,8 @@ namespace Hudossay.AttributeEvents.Assets.Runtime
             Initialize();
 
 
-        private void OnDisable()
-        {
+        private void OnDisable() =>
             _areGameObjectEventsInitialized = false;
-        }
 
 
         private void OnDestroy()

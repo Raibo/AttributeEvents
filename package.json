@@ -1,6 +1,6 @@
 {
   "name": "com.hudossay.attribute-events",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "displayName": "Attribute Events",
   "description": "This package allows to easily connect events and response methods in different MonoBehaviour scripts by simply marking them with attributes.\n\nThis allows scripts to interact with each other without depending on each other in code.\n\nYou can create local events that will only invoke methods in subscripted game objects or global events that will invoke matching methods in any game object.",
   "unity": "2021.3",

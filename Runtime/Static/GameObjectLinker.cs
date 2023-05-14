@@ -1,5 +1,6 @@
 ﻿using Hudossay.AttributeEvents.Assets.Runtime.CouplingStructure;
 using Hudossay.AttributeEvents.Assets.Runtime.EventLinks;
+using Hudossay.AttributeEvents.Assets.Runtime.Static.LabeledMemberMatchers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,11 +34,32 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.Static
                     if (broadcasterMonoInstance == listenerMonoInstance)
                         continue;
 
-                    var pair = LabeledMonoPair.FromLabeledMono(labeledBroadcaster, labeledListener);
-                    eventLinks.AddRange(pair.Connect(broadcasterMonoInstance, listenerMonoInstance));
+                    var matchesCount = ConnectMonoPair(labeledBroadcaster, labeledListener, broadcasterMonoInstance, listenerMonoInstance,
+                        _connectLinksBuffer);
+
+                    for (int matchIndex = 0; matchIndex < matchesCount; matchIndex++)
+                        eventLinks.Add(_connectLinksBuffer[matchIndex]);
                 }
 
             return eventLinks;
         }
+
+
+        private static int ConnectMonoPair(LabeledMono labeledBroadcaster, LabeledMono labeledListener,
+            MonoBehaviour broadcasterInstance, MonoBehaviour listenerInstance, EventLinkBase[] linksBuffer)
+        {
+            var matchesCount = LabeledMemberMatcherLinkedList.GetMatches(labeledBroadcaster.LabeledEvents, labeledListener.LabeledResponses,
+                _labeledMatchesBuffer);
+
+            for (int matchIndex = 0; matchIndex < matchesCount; matchIndex++)
+                linksBuffer[matchIndex] = _labeledMatchesBuffer[matchIndex].Connect(broadcasterInstance, listenerInstance);
+
+            return matchesCount;
+        }
+
+
+        private const int MaxMatches = 100;
+        private static readonly LabeledMatch[] _labeledMatchesBuffer = new LabeledMatch[MaxMatches];
+        private static readonly EventLinkBase[] _connectLinksBuffer = new EventLinkBase[MaxMatches];
     }
 }
