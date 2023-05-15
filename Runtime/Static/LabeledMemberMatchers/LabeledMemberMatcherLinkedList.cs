@@ -10,20 +10,17 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.Static.LabeledMemberMatchers
             LabeledMatch[] resultBuffer)
         {
             var maxLength = Math.Max(Math.Max(labeledEvents.Length, labeledResponses.Length), MinMapSize);
-
             var totalNodesRequired = labeledEvents.Length + labeledResponses.Length + maxLength + maxLength;
+
             var demandedNodesMemory = sizeof(Node) * totalNodesRequired;
+            var canFitNodesInStack = demandedNodesMemory <= MaxStackNodesMemory;
 
-            var shouldPutNodesInStack = demandedNodesMemory <= MaxStackNodesMem;
+            Node[] sharedBuffer = canFitNodesInStack ? null : ArrayPool<Node>.Shared.Rent(totalNodesRequired);
 
-            // Pool renting if cannot fit in stack
-            Node[] sharedNodesArray = shouldPutNodesInStack ? null : ArrayPool<Node>.Shared.Rent(totalNodesRequired);
-
-            fixed (Node* nodeArrayPtr = shouldPutNodesInStack ? null : sharedNodesArray)
+            fixed (Node* sharedBufferPtr = canFitNodesInStack ? null : sharedBuffer)
             {
-                Span<Node> allNodeSpan = shouldPutNodesInStack
-                    ? stackalloc Node[totalNodesRequired]
-                    : new Span<Node>(sharedNodesArray, 0, totalNodesRequired);
+                Span<Node> allNodeSpan =
+                    canFitNodesInStack ? stackalloc Node[totalNodesRequired] : new Span<Node>(sharedBuffer, 0, totalNodesRequired);
 
                 var defaultNode = new Node { Index = -1 };
 
@@ -54,8 +51,8 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.Static.LabeledMemberMatchers
                     resultBuffer[i] = new LabeledMatch(labeledEvent.EventLabel, labeledEvent, labeledResponse, labeledResponse.Args);
                 }
 
-                if (!shouldPutNodesInStack)
-                    ArrayPool<Node>.Shared.Return(sharedNodesArray);
+                if (!canFitNodesInStack)
+                    ArrayPool<Node>.Shared.Return(sharedBuffer);
 
                 return matchesCount;
             }
@@ -97,7 +94,7 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.Static.LabeledMemberMatchers
         private static unsafe short FindMatches(LabeledEvent[] labeledEvents, LabeledResponse[] labeledResponses, int maxLength,
             Span<Node> eventsHashLinkedMap, Span<Node> responsesHashLinkedMap, ref (byte, byte)[] matchesBuffer)
         {
-            short matchesCount = 0;
+            short currentMatchIndex = 0;
             Node* eventNodePtr;
             Node* responseNodePtr;
 
@@ -118,8 +115,8 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.Static.LabeledMemberMatchers
 
                         if (labeledEvent.IsMatchingTo(labeledResponse))
                         {
-                            matchesBuffer[matchesCount] = ((byte)eventNodePtr->Index, (byte)responseNodePtr->Index);
-                            matchesCount++;
+                            matchesBuffer[currentMatchIndex] = ((byte)eventNodePtr->Index, (byte)responseNodePtr->Index);
+                            currentMatchIndex++;
                         }
 
                         responseNodePtr = responseNodePtr->Next;
@@ -129,7 +126,7 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.Static.LabeledMemberMatchers
                 }
             }
 
-            return matchesCount;
+            return currentMatchIndex;
         }
 
 
@@ -178,8 +175,8 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.Static.LabeledMemberMatchers
 
 
         private const int MinMapSize = 17;
-        private const int MaxStackNodesMem = 1024;
-        private const int MaxMatches = 100;
+        private const int MaxStackNodesMemory = 1024;
+        private const int MaxMatches = 256;
 
         private static (byte EventIndex, byte ResponseIndex)[] _matchesBuffer = new (byte, byte)[MaxMatches];
     }

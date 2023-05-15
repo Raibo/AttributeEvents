@@ -58,7 +58,7 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.Static
         }
 
 
-        private const int MaxMatches = 100;
+        private const int MaxMatches = 256;
         private static readonly LabeledMatch[] _labeledMatchesBuffer = new LabeledMatch[MaxMatches];
         private static readonly EventLinkBase[] _connectLinksBuffer = new EventLinkBase[MaxMatches];
     }
