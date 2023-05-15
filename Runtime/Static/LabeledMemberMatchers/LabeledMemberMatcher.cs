@@ -4,7 +4,7 @@ using System.Buffers;
 
 namespace Hudossay.AttributeEvents.Assets.Runtime.Static.LabeledMemberMatchers
 {
-    internal class LabeledMemberMatcherLinkedList
+    internal class LabeledMemberMatcher
     {
         public unsafe static int GetMatches(LabeledEvent[] labeledEvents, LabeledResponse[] labeledResponses,
             LabeledMatch[] resultBuffer)

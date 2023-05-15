@@ -48,7 +48,7 @@ namespace Hudossay.AttributeEvents.Assets.Runtime.Static
         private static int ConnectMonoPair(LabeledMono labeledBroadcaster, LabeledMono labeledListener,
             MonoBehaviour broadcasterInstance, MonoBehaviour listenerInstance, EventLinkBase[] linksBuffer)
         {
-            var matchesCount = LabeledMemberMatcherLinkedList.GetMatches(labeledBroadcaster.LabeledEvents, labeledListener.LabeledResponses,
+            var matchesCount = LabeledMemberMatcher.GetMatches(labeledBroadcaster.LabeledEvents, labeledListener.LabeledResponses,
                 _labeledMatchesBuffer);
 
             for (int matchIndex = 0; matchIndex < matchesCount; matchIndex++)
